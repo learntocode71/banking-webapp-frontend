@@ -122,6 +122,10 @@ const CreateClientDialog = ({ open, client, onClose }) => {
    * set local state variable image
    */
   const onChangeHandler = async (e) => {
+    if (e.target.files[0]?.size > 3145728) {
+      toast.error("File size should be less than 3mb");
+      return;
+    }
     const response = await binaryToBase64(e.target.files[0]);
     setImage(response);
   };
@@ -135,11 +139,11 @@ const CreateClientDialog = ({ open, client, onClose }) => {
   }, [client]);
 
   return (
-    <Dialog open={open} onClose={cleanup}>
+    <Dialog open={open} onClose={() => cleanup(null, null)}>
       <DialogTitle>
         <div className={closeBtn}>
           <span>{edit ? "Update" : "Create"} Client</span>
-          <IconButton onClick={cleanup}>
+          <IconButton onClick={() => cleanup(null, null)}>
             <CloseIcon />
           </IconButton>
         </div>

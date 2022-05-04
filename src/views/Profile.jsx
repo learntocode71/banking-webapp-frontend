@@ -56,6 +56,10 @@ const Profile = () => {
    * set local state variable image
    */
   const onChangeHandler = async (e) => {
+    if (e.target.files[0]?.size > 3145728) {
+      toast.error("File size should be less than 3mb");
+      return;
+    }
     const response = await binaryToBase64(e.target.files[0]);
     setImage(response);
   };
