@@ -185,7 +185,7 @@ const CreateClientDialog = ({ open, client, onClose }) => {
               <CustomInput
                 type="email"
                 label="Email"
-                error={errors.email}
+                error={errors.email !== undefined}
                 helperText={errors.email}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -193,7 +193,7 @@ const CreateClientDialog = ({ open, client, onClose }) => {
               <CustomInput
                 type="password"
                 label="Password"
-                error={errors.password}
+                error={errors.password !== undefined}
                 helperText={errors.password}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

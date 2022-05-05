@@ -10,15 +10,18 @@ import axios from "axios";
 import React, { useState } from "react";
 import CustomInput from "../components/content/CustomInput";
 import jwt_decode from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/reducers/authSlice";
 import validateLoginInputs from "../validations/validateLoginInputs";
 import { toast } from "react-toastify";
 import CustomtToaster from "../components/content/CustomtToaster";
 import { toggleLoader } from "../redux/reducers/commonSlice";
+import Loader from "../components/content/Loader";
 
 const Login = () => {
+  // Redux State
   const dispatch = useDispatch();
+  const loader = useSelector((state) => state.common.loader);
 
   // State variables
   const [email, setEmail] = useState("");
@@ -49,9 +52,13 @@ const Login = () => {
         axios.defaults.headers.common["Authorization"] =
           "Bearer " + response.data.token;
         localStorage.setItem("accessToken", response.data.token);
-        const user = jwt_decode(response.data.token);
-        dispatch(setUser(user));
-        dispatch(toggleLoader(false));
+        try {
+          const user = jwt_decode(response.data.token);
+          dispatch(setUser(user));
+          dispatch(toggleLoader(false));
+        } catch (error) {
+          toast.error(error.message);
+        }
       }
     } catch (error) {
       dispatch(toggleLoader(false));
@@ -76,7 +83,7 @@ const Login = () => {
                   <CustomInput
                     type="email"
                     label="Email"
-                    error={errors.email}
+                    error={errors.email !== undefined}
                     helperText={errors.email}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -84,7 +91,7 @@ const Login = () => {
                   <CustomInput
                     type="Password"
                     label="Password"
-                    error={errors.password}
+                    error={errors.password !== undefined}
                     helperText={errors.password}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -99,6 +106,7 @@ const Login = () => {
         </Grid>
         <CustomtToaster />
       </Container>
+      <Loader loading={loader} />
     </div>
   );
 };

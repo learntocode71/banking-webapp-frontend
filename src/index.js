@@ -29,11 +29,15 @@ axios.interceptors.response.use(
 if (localStorage.accessToken) {
   axios.defaults.headers.common["Authorization"] =
     "Bearer " + localStorage.accessToken;
-  const user = jwtDecode(localStorage.accessToken);
-  store.dispatch(setUser(user));
+
+  try {
+    const user = jwtDecode(localStorage.accessToken);
+    store.dispatch(setUser(user));
+  } catch (error) {
+    logoutUser();
+  }
 } else {
-  delete axios.defaults.headers.common["Authorization"];
-  store.dispatch(setUser({}));
+  logoutUser();
 }
 
 // const root = ReactDOM.createRoot(document.getElementById("root"));

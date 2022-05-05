@@ -139,14 +139,14 @@ const Clients = () => {
       );
       setClients(copy);
       setFilteredClients(copy);
-      toast.success("Client updated successfully");
+      if (updatedClient) toast.success("Client updated successfully");
     }
 
     if (newClient) {
       const copy = manipulateLocalRecord(clients, newClient, "insert", null);
       setClients(copy);
       setFilteredClients(copy);
-      toast.success("Client created successfully");
+      if (newClient) toast.success("Client created successfully");
     }
     setClient({});
     setOpen(false);
@@ -157,7 +157,7 @@ const Clients = () => {
       (item) =>
         item.name.toLowerCase().match(search.toLowerCase()) ||
         item.email.toLowerCase().match(search.toLowerCase()) ||
-        item.address.toLowerCase().match(search.toLowerCase())
+        item?.address.toLowerCase().match(search.toLowerCase())
     );
 
     setFilteredClients(result);

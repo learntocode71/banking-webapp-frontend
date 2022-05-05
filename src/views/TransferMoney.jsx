@@ -13,11 +13,13 @@ import CustomInput from "../components/content/CustomInput";
 import CustomtToaster from "../components/content/CustomtToaster";
 import { toggleLoader } from "../redux/reducers/commonSlice";
 import { setProfile } from "../redux/reducers/profileSlice";
+import validateTransferMoneyInput from "../validations/validateTransferMoneyInput";
 
 const TransferMoney = () => {
   // State Variables
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState(0);
+  const [errors, setErrors] = useState({});
 
   // Redux state
   const dispatch = useDispatch();
@@ -25,6 +27,15 @@ const TransferMoney = () => {
 
   const transferMoney = async (e) => {
     e.preventDefault();
+
+    const { errors, isInvalid } = validateTransferMoneyInput({ email, amount });
+
+    if (isInvalid) {
+      setErrors(errors);
+      return;
+    } else {
+      setErrors({});
+    }
 
     try {
       dispatch(toggleLoader(true));
@@ -58,12 +69,17 @@ const TransferMoney = () => {
           <CustomInput
             type="email"
             label="Email"
+            error={errors.email !== undefined}
+            helperText={errors.email}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <CustomInput
+            inputProps={{ min: 0 }}
             type="number"
             label="Amount"
+            error={errors.amount !== undefined}
+            helperText={errors.amount}
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />

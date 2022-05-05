@@ -13,7 +13,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PaidIcon from "@mui/icons-material/Paid";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CloseIcon from "@mui/icons-material/Close";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import GroupIcon from "@mui/icons-material/Group";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,10 +43,25 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     justifyContent: "end",
   },
+  sidebarMenu: {
+    "& a": {
+      color: "#212121",
+      "& svg path": {
+        fill: "#757575",
+      },
+      "&.active": {
+        background: "#1976d2",
+        color: "white !important",
+        "& svg path": {
+          fill: "#fff",
+        },
+      },
+    },
+  },
 }));
 
 const Sidebar = () => {
-  const { avatar, closeBtn } = useStyles();
+  const { avatar, closeBtn, sidebarMenu } = useStyles();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +116,7 @@ const Sidebar = () => {
           <Typography>{user?.name}</Typography>
           <Typography variant="subtitle">{user?.email}</Typography>
         </div>
-        <List>
+        <List className={sidebarMenu}>
           <ListItem component={NavLink} to="/" onClick={closeDrawer}>
             <ListItemIcon>
               <AccountCircleIcon />
@@ -122,7 +138,7 @@ const Sidebar = () => {
           {user?.isAdmin && (
             <ListItem component={NavLink} to="/clients" onClick={closeDrawer}>
               <ListItemIcon>
-                <PeopleAltIcon />
+                <GroupIcon />
               </ListItemIcon>
               <ListItemText>Clients</ListItemText>
             </ListItem>
@@ -134,7 +150,7 @@ const Sidebar = () => {
             onClick={closeDrawer}
           >
             <ListItemIcon>
-              <PaidIcon />
+              <VpnKeyIcon />
             </ListItemIcon>
             <ListItemText>Change Password</ListItemText>
           </ListItem>

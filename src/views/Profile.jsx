@@ -90,7 +90,10 @@ const Profile = () => {
    * change name value when user gets changed in redux state
    */
   useEffect(() => {
-    if (user !== undefined) setName(user.name);
+    if (user !== undefined) {
+      setName(user.name);
+      setAddress(user.address);
+    }
   }, [user]);
 
   return (

@@ -14,6 +14,10 @@ const validateCreateClientInput = (data) => {
     errors.email = "Email is required field.";
   }
 
+  if (!validator.isLength(password, { min: 6 })) {
+    errors.password = "Password should have at least 6 characters";
+  }
+
   if (validator.isEmpty(password)) {
     errors.password = "Password is required field.";
   }
